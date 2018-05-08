@@ -41,18 +41,18 @@ def calculate():
             print("WARNING 0 found - SKIPPING ITERATION")
             continue
 
-        # Multiple the value by the weight and add to the cumulative variable
+        # Multiply the value by the weight and add to the cumulative variable
         cumulative = cumulative + (x * y)
 
-        # Increment the index for the second array
+        # Increment the index for the weight array
         i = i + 1
 
-    # Print total value
     print(cumulative)
+
     return cumulative
 
 
-# TODO apply activation function to cumulative
+# TODO apply activation function to cumulative value
 
 
 def main(event, context):
