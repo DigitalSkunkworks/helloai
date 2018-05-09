@@ -1,13 +1,54 @@
+import os
 import json
+import uuid
+import boto3
+
+# Get the service resource
+dynamodb = boto3.resource('dynamodb')
+
+table = dynamodb.Table(os.environ['TABLE_NAME'])
 
 # Set array values - TODO Get Arrays from external data source
 value = [1, 2, 0, 4, 2]
 weight = [5, 6, 7, 8, 8]
 
+'''
+Inserts data into dynamodb
+'''
+def put_dynamo():
 
-# Function which checks the length of each array
+   table.put_item(
+       Item={
+           'id': str(uuid.uuid4()),
+           'username': 'janedoe',
+           'first_name': 'Jane',
+           'last_name': 'Doe',
+           'age': 25,
+           'account_type': 'standard_user',
+       }
+   )
+
+'''
+Retrieves data from dynamodb
+'''
+def get_dynamo():
+
+    response = table.get_item(
+        Key={
+            'id': '8854b233-5807-4cb0-afce-4636d3d3783f'
+        }
+    )
+    item = response['Item']
+    print(item)
+
+    return item
+
+
+'''
+Checks the length of the input arrays
+Returns a boolean value
+'''
 def length_check():
-
     # Get length of each array
     value_length = len(value)
     weight_length = len(weight)
@@ -15,7 +56,9 @@ def length_check():
     # Check if arrays are the same length
     return False if value_length != weight_length else True
 
-
+'''
+The main calculations 
+'''
 def calculate():
     # Initialise cumulative variable
     cumulative = 0
@@ -54,9 +97,13 @@ def calculate():
 
 # TODO apply activation function to cumulative value
 
-
+'''
+Entry point for lambda
+'''
 def main(event, context):
     total = calculate()
+    put_dynamo()
+    user = get_dynamo()
 
     body = {
         "message": "Serverless function executed successfully!",
@@ -66,16 +113,8 @@ def main(event, context):
     response = {
         "statusCode": 200,
         "body": json.dumps(body),
-        "CumulativeValue": total
+        "CumulativeValue": total,
+        "User":user
     }
 
     return response
-
-    # Use this code if you don't use the http event with the LAMBDA-PROXY
-    # integration
-    """
-    return {
-        "message": "Go Serverless v1.0! Your function executed successfully!",
-        "event": event
-    }
-    """

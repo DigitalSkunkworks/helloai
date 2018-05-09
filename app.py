@@ -1,9 +1,30 @@
 import sys
+import boto3
+import uuid
 
 # Set array values - TODO Get Arrays from external data source
 value = [1, 2, 0, 4, 2]
 weight = [5, 6, 7, 8, 8]
 
+
+def put_dynamo():
+    print('hi')
+
+    # Get the service resource
+    dynamodb = boto3.resource('dynamodb')
+
+    table = dynamodb.Table('helloai')
+
+    table.put_item(
+        Item={
+            'id': uuid.uuid4(),
+            'username': 'janedoe',
+            'first_name': 'Jane',
+            'last_name': 'Doe',
+            'age': 25,
+            'account_type': 'standard_user',
+        }
+    )
 
 # Function which checks the length of each array
 def length_check():
