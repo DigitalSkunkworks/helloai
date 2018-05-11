@@ -34,7 +34,15 @@ provider:
       Resource:
         Fn::Join:
            - ""
-           - - "arn:aws:dynamodb:eu-west-2:320239334567:table/helloai"
+           - - "arn:aws:dynamodb:eu-west-2:320239334567:table/HelloAiInput"
+    - Effect: "Allow"
+      Action:
+        - "dynamodb:PutItem" 
+        - "dynamodb:GetItem" 
+      Resource:
+        Fn::Join:
+           - ""
+           - - "arn:aws:dynamodb:eu-west-2:320239334567:table/HelloAiOutput"
 #      Action:
 #        - "s3:PutObject"
 #      Resource:
@@ -46,7 +54,8 @@ provider:
 
 # you can define service wide environment variables here
   environment:
-    TABLE_NAME: helloai
+    TABLE_NAME: HelloAiInput
+    OUTPUT_TABLE_NAME: HelloAiOutput
 
 # you can add packaging information here
 #package:
@@ -60,6 +69,12 @@ provider:
 functions:
   main:
     handler: handler.main
+    events:
+      - stream: 
+         arn: arn:aws:dynamodb:eu-west-2:320239334567:table/HelloAiInput/stream/2018-05-10T12:52:31.075
+         batchSize: 1
+         startingPosition: LATEST
+         enabled: true    
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
