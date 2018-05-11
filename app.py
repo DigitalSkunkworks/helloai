@@ -72,6 +72,10 @@ Sigmoid function required by the calculate function
 '''
 def sigmoid(x):
   return 1 / (1 + math.exp(-x))
+
+def ReLU(x):
+    return x * (x > 0)
+
 '''
 The main calculations 
 '''
@@ -109,7 +113,7 @@ def calculate(weight, value):
 
     # TODO CONVERT ME TO DECIMAL - DOES NOT CURRENTLY WORK
     print(cumulative)
-    output = sigmoid(cumulative)
+    output = ReLU(cumulative)
 
 
     print(output)

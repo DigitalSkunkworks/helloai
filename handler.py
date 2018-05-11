@@ -92,7 +92,7 @@ def length_check(weight, value):
     return False if value_length != weight_length else True
 
 '''
-Runs the activation function against the output provided by the calculation function
+Runs the sigmoid activation function against the output provided by the calculation function
 
 Parameters:
     x: the cumulative value provided by the calculation function
@@ -102,6 +102,18 @@ Example output:
 '''
 def sigmoid(x):
   return 1 / (1 + math.exp(-x))
+
+'''
+Runs the relu activation function against the output provided by the calculation function
+
+Parameters:
+    x: the cumulative value provided by the calculation function
+
+Example output:
+    float
+'''
+def ReLU(x):
+    return x * (x > 0)
 
 '''
 Builds a list of floats from a list of objects
@@ -166,7 +178,7 @@ def calculate(weight, value):
         # Increment the index for the weight array
         i = i + 1
 
-    output = sigmoid(cumulative)
+    output = ReLU(cumulative)
 
 
     print(output)
